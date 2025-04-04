@@ -31,7 +31,11 @@
   </ul>
   {% endfor %}
 
-
+  <h3>'gpt-4o-mini' 분석:</h3>
+  {% if report %}
+  <h3>GPT 분석 결과:</h3>
+  <p>{{ report }}</p>
+  {% endif %}
 {% else %}
 <h3>일치하는 회사 이름이 없습니다.</h3>
 
