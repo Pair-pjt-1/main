@@ -4,7 +4,7 @@
 <p>주식에 대한, 투자자들의 목소리</p>
 <h1>주식 댓글 분석기</h1>
 
-<form action="crawlings:index" method="POST">
+<form action="{% url "crawlings:find" %}" method="POST">
   {% csrf_token %}
   <div>
     <label for="title">회사 이름을 입력하세요: </label>
@@ -14,18 +14,26 @@
 </form>
 
 {% if company_info %} 
-{{ company_info.title }}
+<h2>{{ company_info.title }} ({{ company_info.code }})</h2>
 
-<div>
+
   <h3>수집된 댓글:</h3>
-  {% for comment in company_info.comment %}
+  {% for item in company_info.comments %}
   <ul>
-    <li>{{ comment }}</li>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom:8px;">
+        <li stype="list-style: none;">{{ item.comment }}</li>
+        <form action="{% url "crawlings:delete_comment" item.pk %}" method="POST" style="margin: 0;">
+            {% csrf_token %}
+            <input type="hidden" name="title" value="{{ company_info.title }}">
+            <input type="submit" value="삭제">
+        </form>
+    </div>
   </ul>
   {% endfor %}
-</div>
+
 
 {% else %}
 <h3>일치하는 회사 이름이 없습니다.</h3>
 
-{% endif %} {% endblock content %}
+{% endif %} 
+{% endblock content %}
