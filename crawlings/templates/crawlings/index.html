@@ -1,0 +1,31 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<p>주식에 대한, 투자자들의 목소리</p>
+<h1>주식 댓글 분석기</h1>
+
+<form action="crawlings:index" method="POST">
+  {% csrf_token %}
+  <div>
+    <label for="title">회사 이름을 입력하세요: </label>
+    <input type="text" name="title" id="title" />
+    <input type="submit" value="검색" />
+  </div>
+</form>
+
+{% if company_info %} 
+{{ company_info.title }}
+
+<div>
+  <h3>수집된 댓글:</h3>
+  {% for comment in company_info.comment %}
+  <ul>
+    <li>{{ comment }}</li>
+  </ul>
+  {% endfor %}
+</div>
+
+{% else %}
+<h3>일치하는 회사 이름이 없습니다.</h3>
+
+{% endif %} {% endblock content %}
